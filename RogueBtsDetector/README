@@ -1,0 +1,17 @@
+This is the app resulting from google's mapview android tutorial.
+
+TODO:
+	
+	- retrieve cellular LocationProvider(s) information.
+	- retrieve some other LocationProvider (GPS, wifi) to cross reference BTS data
+	- show current location on map with an Overlay
+	- show sorrounding LocationProviders with Overlays
+	- verify BTS data
+		- query google for IDs retrieved from LocationProviders
+			- ID not found
+			- ID location incorrect
+		- ??? - Think hard here
+	- Notify user of any BTS stations
+	- Can we turn on airplane mode automagically? 
+	
+
