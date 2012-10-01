@@ -86,7 +86,7 @@ public class RogueBtsDetector extends MapActivity implements LocationListener {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_hello_google_maps, menu);
+        //getMenuInflater().inflate(R.menu.activity_Rogue_Bts_Detector, menu);
         return true;
     }
     
