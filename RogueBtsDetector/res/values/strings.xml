@@ -2,6 +2,10 @@
 
     <string name="app_name">RogueBtsDetector</string>
     <string name="menu_settings">Settings</string>
+    <string name="bts_service_started">RogueBtsDetector service started.</string>
+    <string name="bts_service_stopped">RogueBtsDetector Service stopped.</string>
+    <string name="bts_service_disconnected">RogueBtsDetector Service disconnected.</string>
+    <string name="bts_service_connected">RogueBtsDetector Service connected.</string>
     <string name="title_activity_rogue_bts_detector">RogueBtsDetector</string>
 
 </resources>
