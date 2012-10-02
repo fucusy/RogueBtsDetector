@@ -55,13 +55,8 @@ public class RogueBtsDetector extends MapActivity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-       // doBindService();
+        doBindService();
         
-        //createFakeProvider();
-        Intent serviceIntent = new Intent();
-        serviceIntent.setAction("com.example.roguebtsdetector.BtsVerifierService");
-        startService(serviceIntent);
-
        // MapView mapView = (MapView) findViewById(R.id.mapview);
        // mapView.setBuiltInZoomControls(true);
 
@@ -72,7 +67,7 @@ public class RogueBtsDetector extends MapActivity implements LocationListener {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.activity_Rogue_Bts_Detector, menu);
+        getMenuInflater().inflate(R.menu.activity_rogue_bts_detector, menu);
         return true;
     }
 
@@ -101,18 +96,22 @@ public class RogueBtsDetector extends MapActivity implements LocationListener {
         Toast.makeText(this, "Disabled provider " + provider,
                 Toast.LENGTH_SHORT).show();
     } 
- /*
+ 
     @Override
     public void onStart() {
+        super.onStart();
 
+        Toast.makeText(this, "app started",
+                Toast.LENGTH_SHORT).show();
         // Get the location manager
         //locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         int btsCid = 0, btsLat = 0, btsLon= 0;
         
-        showTower(btsCid, btsLat, btsLon);
+        //showTower(btsCid, btsLat, btsLon);
 
-    }
-*/
+    } 
+    
+
     public void showTower(int cid, int lat, int lon){
 
         Drawable drawable = this.getResources().getDrawable(R.drawable.ic_launcher);
@@ -122,18 +121,6 @@ public class RogueBtsDetector extends MapActivity implements LocationListener {
         itemizedoverlay.addOverlay(overlayitem);
         mapOverlays.add(itemizedoverlay);
     } 
-
-
-    public void createFakeProvider(LocationManager locman){
-
-        /*
-        locman.addTestProvider(provider, false, false, true, false, false, false, false, 0, 5);
-        locman.setTestProviderLocation(provider, fakeLocation);
-        locman.setTestProviderEnabled(provider, true);
-         */
-
-
-    }
 
 
 

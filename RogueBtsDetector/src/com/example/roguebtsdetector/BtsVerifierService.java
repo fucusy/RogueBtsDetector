@@ -8,6 +8,10 @@ package com.example.roguebtsdetector;
 
 import	android.app.Service;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationProvider;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.telephony.TelephonyManager;
@@ -16,11 +20,10 @@ import android.util.Log;
 
 public class BtsVerifierService extends Service {
 
-    private GsmCellLocation loc;
-    private TelephonyManager tm;
+    private GsmCellLocation gsmLoc;
+    private TelephonyManager telMan;
+    private LocationManager locMan;
     private final IBinder btsVerifierBinder = new BtsVerifierBinder();
-
- 
 
 
     public class BtsVerifierBinder extends Binder {
@@ -40,9 +43,21 @@ public class BtsVerifierService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("BtsService", "startedd");
-        tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        loc = (GsmCellLocation) tm.getCellLocation();
-        verifyBts(loc);
+        
+        
+        locMan = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if(locMan == null)
+        {
+            Log.i("BtsService", "locMan NULL");
+        }
+        else
+        {
+            createFakeProvider(locMan);
+
+        }
+        //telMan = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        //gsmLoc = (GsmCellLocation) tm.getCellLocation();
+        //verifyBts(gsmLoc);
 
         //Log.i("BtsService", "Received start id " + startId + ": " + intent);
         // We want this service to run indefinitely, so return sticky.
@@ -60,7 +75,6 @@ public class BtsVerifierService extends Service {
 
     // This is the object that receives interactions from clients.  See
     // RemoteService for a more complete example.
-
 
 
 
@@ -104,4 +118,20 @@ public class BtsVerifierService extends Service {
     }
 
 
+    public void createFakeProvider(LocationManager locman)
+    {
+
+        Log.i("BtsService", "fakeProvider");
+
+        /*
+        locman.addTestProvider(provider, false, false, true, false, false, false, false, 0, 5);
+        locman.setTestProviderLocation(provider, fakeLocation);
+        locman.setTestProviderEnabled(provider, true);
+         */
+
+
+    }
+
+
+    
 }
