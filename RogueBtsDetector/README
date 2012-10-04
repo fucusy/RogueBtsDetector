@@ -2,16 +2,16 @@
 TODO:
 	
 	- retrieve cellular LocationProvider(s) information.
-	- retrieve some other LocationProvider (GPS, wifi) to cross reference BTS data
+	- retrieve some other LocationProvider (GPS, WIFI) to cross reference BTS data
 	- show current location on map with an Overlay
-	- show sorrounding LocationProviders with Overlays
+	- show surrounding LocationProviders with Overlays
 	- verify BTS data
 		- query google for IDs retrieved from LocationProviders
 			- ID not found
 			- ID location incorrect
 		- ??? - Think hard here
 	- Notify user of any BTS stations
-	- Can we turn on airplane mode automagically? 
+	- Can we turn on airplane mode auto-magically? 
 	
 	- testing a new commit
 
