@@ -20,9 +20,9 @@ import android.util.Log;
 
 public class BtsVerifierService extends Service {
 
-    private GsmCellLocation gsmLoc;
-    private TelephonyManager telMan;
-    private LocationManager locMan;
+    private GsmCellLocation gsmCellLocation;
+    private TelephonyManager telephonyManager;
+    private LocationManager locationManager;
     private final IBinder btsVerifierBinder = new BtsVerifierBinder();
     private OpenCellId openCellId = new OpenCellId();
 
@@ -42,24 +42,23 @@ public class BtsVerifierService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("BtsService", "startedd");
+        Log.i("BtsService", "started");
         
-        
-        locMan = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if(locMan == null)
-        {
-            Log.i("BtsService", "locMan NULL");
-        }
-        else
-        {
-            createFakeProvider(locMan);
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
 
-        }
-        //telMan = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        //gsmLoc = (GsmCellLocation) tm.getCellLocation();
+        GsmCellLocation gsmCellLocation = (GsmCellLocation)telephonyManager.getCellLocation();
+        
+        int cid = gsmCellLocation.getCid();
+        int lac = gsmCellLocation.getLac();
+        
+        
+      
+        //createFakeProvider(locationManager);
+
         //verifyBts(gsmLoc);
 
         //Log.i("BtsService", "Received start id " + startId + ": " + intent);
+        
         // We want this service to run indefinitely, so return sticky.
         return START_STICKY;
     }

@@ -8,4 +8,5 @@
     <string name="bts_service_connected">RogueBtsDetector Service connected.</string>
     <string name="title_activity_rogue_bts_detector">RogueBtsDetector</string>
 	<string name="open_cell_id_url">http://www.opencellid.org/cell/</string>
+	<string name="google_location_url">http://www.google.com/glm/mmap</string>
 </resources>
