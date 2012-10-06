@@ -12,8 +12,6 @@ public class OpenCellId {
     private String openCellIdUrl, myLatitude, myLongitude, mcc, mnc, cellid, lac, latmin, latmax, lonmin, lonmax;
     private boolean error;
     private String[] neighbors, measurements;
-
-
     private static final int LOCATION = 0, NEIGHS = 1, MEASURES = 2;
     private static final double BBOX_LENGTH = .5;
     public static final int CONNECTION_ERR = -2 , ERROR = -1;
