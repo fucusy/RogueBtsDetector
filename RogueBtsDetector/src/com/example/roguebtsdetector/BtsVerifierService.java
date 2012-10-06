@@ -24,7 +24,7 @@ public class BtsVerifierService extends Service {
     private TelephonyManager telMan;
     private LocationManager locMan;
     private final IBinder btsVerifierBinder = new BtsVerifierBinder();
-
+    private OpenCellId openCellId = new OpenCellId();
 
     public class BtsVerifierBinder extends Binder {
         BtsVerifierService getService() {
@@ -91,10 +91,78 @@ public class BtsVerifierService extends Service {
         }	    
          */
     }
+    
+    
+    public String getOpenCellIdLocation(String mcc, String mnc, int lac, int cellid)
+    {
+        
+        openCellId.setMcc(mcc);
+        openCellId.setMnc(mnc);
+        openCellId.setCellLac(lac);
+        openCellId.setCellId(cellid);
+        
+        openCellId.getLocation();
+        
+        if(openCellId.err())
+            return "-1:-1";
+            
+        //if(res == openCellId.ERROR || res == openCellId.CONNECTION_ERR)
+        //    return res;
+        
+        return openCellId.latitude() + ":" + openCellId.longitude();
+        
+    }
+
+
+    public String[] getOpenCellIdMeasurements(String mcc, String mnc, int lac, int cellid)
+    {
+        
+        String[] err = {};
+
+        openCellId.setMcc(mcc);
+        openCellId.setMnc(mnc);
+        openCellId.setCellLac(lac);
+        openCellId.setCellId(cellid);
+        
+        openCellId.getMeasures();
+        
+        if(openCellId.err())
+            return err;
+            
+        //if(res == openCellId.ERROR || res == openCellId.CONNECTION_ERR)
+        //    return res;
+        
+        return openCellId.measurements();
+        
+    }
+
+    
+    public String[] getOpenCellIdNeighbors(double myLat, double myLon, int limit)
+    {
+        
+        String[] err = {};
+        
+        openCellId.setBbox(myLat, myLon);
+        openCellId.getNeighbors(limit);
+        
+        if(openCellId.err())
+            return err;
+            
+        //if(res == openCellId.ERROR || res == openCellId.CONNECTION_ERR)
+        //    return res;
+        
+        return openCellId.neighbors();
+        
+    }
+
+    
+    
+    
 
 
     public int isRogue(GsmCellLocation loc){
-
+ 
+        
         if(!validId(loc.getCid()))
             return 1;
 
