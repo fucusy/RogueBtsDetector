@@ -9,7 +9,7 @@ import org.apache.http.util.EntityUtils;
 public class OpenCellId {
 
 
-    private String openCellIdUrl, myLatitude, myLongitude, mcc, mnc, cellid, lac, latmin, latmax, lonmin, lonmax;
+    private String openCellIdUrl, myLatitude, myLongitude, latmin, latmax, lonmin, lonmax;
     private boolean error;
     private String[] neighbors, measurements;
     private static final int LOCATION = 0, NEIGHS = 1, MEASURES = 2;
@@ -20,10 +20,6 @@ public class OpenCellId {
     {
         myLatitude = "";
         myLongitude = "";
-        mcc = "";
-        mnc = "";
-        cellid = "";
-        lac = "";   
         latmin = "";
         latmax = "";
         lonmin = "";
@@ -41,8 +37,7 @@ public class OpenCellId {
         return myLatitude;
     }
     
-    
-   
+      
     public String longitude()
     {
         return myLongitude;
@@ -59,24 +54,9 @@ public class OpenCellId {
         return measurements;
     }
    
-    public void setMcc(String value){
-        mcc = value;
-    }
-
-    public void setMnc(String value){
-        mnc = value;
-    }
-
-    public void setCellId(int value){
-        cellid = String.valueOf(value);
-    }
-
-    public void setCellLac(int value){
-        lac = String.valueOf(value);
-    }
 
     
-    public int getLocation()
+    public int getLocation(String mcc, String mnc, String lac, String cellid)
     {
         openCellIdUrl = 
                 R.string.open_cell_id_url 
@@ -91,7 +71,7 @@ public class OpenCellId {
     }
 
 
-    public int getMeasures()
+    public int getMeasures(String mcc, String mnc, String lac, String cellid)
     {
         openCellIdUrl  = 
                 R.string.open_cell_id_url 
@@ -116,7 +96,7 @@ public class OpenCellId {
        
     }
 
-    public int getNeighbors(int limit)
+    public int getNeighbors(String mcc, String mnc, int limit)
     {
 
         if(limit > 200)
@@ -130,10 +110,10 @@ public class OpenCellId {
                 +"," + lonmax
                 +"&limit=" + limit;
 
-        if(Integer.parseInt(mcc) >= 0)
+        if(mcc != "")
             openCellIdUrl = openCellIdUrl + "&mcc=" + mcc;
 
-        if(Integer.parseInt(mnc) >= 0)
+        if(mnc != "")
             openCellIdUrl = openCellIdUrl + "&mnc=" + mnc;
 
         return openCellIdRequest(NEIGHS);

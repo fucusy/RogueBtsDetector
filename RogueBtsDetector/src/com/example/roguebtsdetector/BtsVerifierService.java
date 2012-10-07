@@ -6,11 +6,8 @@
 
 package com.example.roguebtsdetector;
 
-import	android.app.Service;
+import android.app.Service;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationProvider;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Binder;
 import android.os.IBinder;
@@ -25,6 +22,8 @@ public class BtsVerifierService extends Service {
     private LocationManager locationManager;
     private final IBinder btsVerifierBinder = new BtsVerifierBinder();
     private OpenCellId openCellId = new OpenCellId();
+    private OpenBMap openBMap = new OpenBMap();
+    private String mcc, mnc, lac, cellid, latitude, longitude;
 
     public class BtsVerifierBinder extends Binder {
         BtsVerifierService getService() {
@@ -48,8 +47,8 @@ public class BtsVerifierService extends Service {
 
         GsmCellLocation gsmCellLocation = (GsmCellLocation)telephonyManager.getCellLocation();
         
-        int cid = gsmCellLocation.getCid();
-        int lac = gsmCellLocation.getLac();
+        cellid = Integer.toString(gsmCellLocation.getCid());
+        lac = Integer.toString(gsmCellLocation.getLac());
         
         
       
@@ -90,17 +89,30 @@ public class BtsVerifierService extends Service {
         }	    
          */
     }
+  
     
     
-    public String getOpenCellIdLocation(String mcc, String mnc, int lac, int cellid)
+    public String getOpenBMapLocation()
     {
         
-        openCellId.setMcc(mcc);
-        openCellId.setMnc(mnc);
-        openCellId.setCellLac(lac);
-        openCellId.setCellId(cellid);
         
-        openCellId.getLocation();
+        openBMap.getLocation(mcc, mnc, lac, cellid);
+        
+        if(openBMap.err())
+            return "-1:-1";
+            
+        //if(res == openCellId.ERROR || res == openCellId.CONNECTION_ERR)
+        //    return res;
+        
+        return openBMap.latitude() + ":" + openBMap.longitude();
+        
+    }
+    
+    public String getOpenCellIdLocation()
+    {
+        
+        
+        openCellId.getLocation(mcc,mnc,lac,cellid);
         
         if(openCellId.err())
             return "-1:-1";
@@ -113,17 +125,11 @@ public class BtsVerifierService extends Service {
     }
 
 
-    public String[] getOpenCellIdMeasurements(String mcc, String mnc, int lac, int cellid)
+    public String[] getOpenCellIdMeasurements()
     {
         
-        String[] err = {};
-
-        openCellId.setMcc(mcc);
-        openCellId.setMnc(mnc);
-        openCellId.setCellLac(lac);
-        openCellId.setCellId(cellid);
-        
-        openCellId.getMeasures();
+        String[] err = {};        
+        openCellId.getMeasures(mcc, mnc, lac, cellid);
         
         if(openCellId.err())
             return err;
@@ -136,13 +142,13 @@ public class BtsVerifierService extends Service {
     }
 
     
-    public String[] getOpenCellIdNeighbors(double myLat, double myLon, int limit)
+    public String[] getOpenCellIdNeighbors(int limit)
     {
         
         String[] err = {};
         
-        openCellId.setBbox(myLat, myLon);
-        openCellId.getNeighbors(limit);
+        openCellId.setBbox(Double.valueOf(latitude), Double.valueOf(longitude));
+        openCellId.getNeighbors(mcc, mcc, limit);
         
         if(openCellId.err())
             return err;

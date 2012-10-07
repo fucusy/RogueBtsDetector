@@ -33,6 +33,7 @@ public final class R {
         public static final int bts_service_stopped=0x7f040003;
         public static final int google_location_url=0x7f040008;
         public static final int menu_settings=0x7f040001;
+        public static final int open_b_map_location_url=0x7f040009;
         public static final int open_cell_id_url=0x7f040007;
         public static final int title_activity_rogue_bts_detector=0x7f040006;
     }
