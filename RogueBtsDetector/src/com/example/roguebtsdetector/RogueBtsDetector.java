@@ -1,7 +1,8 @@
 /*
  * This is the main application activity class. The actual app
- * should open up Maps, show the user's current location, the BTS station the user
- * is connected to, and the neighboring stations... 
+ * should open up a map, show the user's current location, the BTS station the user
+ * is connected to, and the neighboring stations... if a rogue BTS is found, it should be
+ * visibly marked as such.
  * 
  */
 
@@ -40,16 +41,29 @@ public class RogueBtsDetector extends MapActivity implements LocationListener {
     private boolean btsServiceIsBound;
     private List<Overlay> mapOverlays;
     private BtsVerifierService btsBoundService;
-
     //private LocationManager locationManager;
     //private String provider = "rogueBts";
 
 
+    /*
+     * (non-Javadoc)
+     * @see com.google.android.maps.MapActivity#isRouteDisplayed()
+     */
     @Override
     protected boolean isRouteDisplayed() {
         return false;
     }
 
+    
+    
+    /*
+     * (non-Javadoc)
+     * @see com.google.android.maps.MapActivity#onCreate(android.os.Bundle)
+     * 
+     * This method gets called when this activity first gets created (installed).
+     * This is where we want to initialize variables, bind to the service, set the content view (map)
+     * and other things...
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,25 +71,41 @@ public class RogueBtsDetector extends MapActivity implements LocationListener {
 
         doBindService();
         
-       // MapView mapView = (MapView) findViewById(R.id.mapview);
-       // mapView.setBuiltInZoomControls(true);
-
-        //mapOverlays = mapView.getOverlays();
-
+        /*
+        MapView mapView = (MapView) findViewById(R.id.mapview);
+        mapView.setBuiltInZoomControls(true);
+        mapOverlays = mapView.getOverlays();
+        */
 
     }
 
+    
+    /*
+     * (non-Javadoc)
+     * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_rogue_bts_detector, menu);
         return true;
     }
 
+    
+    
+    /*
+     * (non-Javadoc)
+     * @see android.location.LocationListener#onLocationChanged(android.location.Location)
+     */
     @Override
     public void onLocationChanged(Location location) {
 
     }
 
+    
+    /*
+     * +(non-Javadoc)
+     * @see android.location.LocationListener#onStatusChanged(java.lang.String, int, android.os.Bundle)
+     */
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         // TODO Auto-generated method stub
@@ -83,6 +113,10 @@ public class RogueBtsDetector extends MapActivity implements LocationListener {
     }
 
 
+    /*
+     * (non-Javadoc)
+     * @see android.location.LocationListener#onProviderEnabled(java.lang.String)
+     */
     @Override
     public void onProviderEnabled(String provider) {
 
@@ -91,12 +125,27 @@ public class RogueBtsDetector extends MapActivity implements LocationListener {
 
     }
 
+    
+    /*
+     * (non-Javadoc)
+     * @see android.location.LocationListener#onProviderDisabled(java.lang.String)
+     */
     @Override
     public void onProviderDisabled(String provider) {
         Toast.makeText(this, "Disabled provider " + provider,
                 Toast.LENGTH_SHORT).show();
     } 
  
+
+    /*
+     * (non-Javadoc)
+     * @see android.app.Activity#onStart()
+     * 
+     * onStart is called every time the app is started. 
+     * This is when we should gather information about neighboring BTS towers.
+     * This should prompt the service to do just that, and then retrieve the data from the service.
+     * Here we should call all functions that will show the user all relevant overlays.
+     * */
     @Override
     public void onStart() {
         super.onStart();
@@ -111,6 +160,10 @@ public class RogueBtsDetector extends MapActivity implements LocationListener {
 
     } 
     
+    
+    /*
+     * showTower, adds a tower overlay with the specified info to the mapview.
+     */
 
     public void showTower(int cid, int lat, int lon){
 
@@ -150,16 +203,19 @@ public class RogueBtsDetector extends MapActivity implements LocationListener {
         }
     };
 
+    
+    
+    /*
+     * Establish a connection with the service.  
+     */
     void doBindService() {
-        // Establish a connection with the service.  We use an explicit
-        // class name because we want a specific service implementation that
-        // we know will be running in our own process (and thus won't be
-        // supporting component replacement by other applications).
         bindService(new Intent(this, 
                 BtsVerifierService.class), btsServiceConnection, Context.BIND_AUTO_CREATE);
         btsServiceIsBound = true;
     }
 
+    
+    
     void doUnbindService() {
         if (btsServiceIsBound) {
             // Detach our existing connection.
@@ -168,6 +224,9 @@ public class RogueBtsDetector extends MapActivity implements LocationListener {
         }
     }
 
+    
+    
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();

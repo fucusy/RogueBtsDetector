@@ -1,3 +1,13 @@
+/*
+ * This class provides functions that interface with the OpenCellID API.
+ * This is the most useful of all APIs as it seems to have the most datapoints
+ * as well as having additional functions.
+ * 
+ * 1) we can retrieve the current network location given the BTS identifiers
+ * 2) we can retrieve the measurements used to calculate item 1)
+ * 3) we can retrieve neighboring BTS locations given a min/max latitude/longitude
+ */
+
 package com.example.roguebtsdetector;
 
 import org.apache.http.HttpResponse;

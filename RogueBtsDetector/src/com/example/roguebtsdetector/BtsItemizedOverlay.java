@@ -1,7 +1,6 @@
 /*
- * This class will setup the overlays for each base station that we will
- * show on the Maps app.
- * 
+ * This is a GUI class. it creates the overlays to be shown on the main mapactivity.
+ * Overlays include the users current location, the current BTS, and neighboring BTS towers.
  */
 
 package com.example.roguebtsdetector;
@@ -15,41 +14,46 @@ import java.util.ArrayList;
 
 public class BtsItemizedOverlay extends ItemizedOverlay {
 
-    private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
-    public  Context mContext;
+    private ArrayList<OverlayItem> overlays = new ArrayList<OverlayItem>();
+    public  Context context;
 
     public BtsItemizedOverlay(Drawable defaultMarker) {
         super(boundCenterBottom(defaultMarker));
-
-        // TODO Auto-generated constructor stub
     }
 
-    public BtsItemizedOverlay(Drawable defaultMarker, Context context) {
+
+    public BtsItemizedOverlay(Drawable defaultMarker, Context cntxt) {
         super(boundCenterBottom(defaultMarker));
-        mContext = context;
+        context = cntxt;
     }
 
     @Override
     protected OverlayItem createItem(int i) {
-        // TODO Auto-generated method stub
-        return mOverlays.get(i);
+        return overlays.get(i);
     }
 
     @Override
     public int size() {
-        // TODO Auto-generated method stub
-        return mOverlays.size();
+        return overlays.size();
     }
 
+    
     public void addOverlay(OverlayItem overlay) {
-        mOverlays.add(overlay);
+        overlays.add(overlay);
         populate();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.google.android.maps.ItemizedOverlay#onTap(int)
+     * 
+     * Defines what happens when the user taps on the overlay...
+     * Presumably we want to show relevant BTS info
+     */
     @Override
     protected boolean onTap(int index) {
-        OverlayItem item = mOverlays.get(index);
-        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext); 
+        OverlayItem item = overlays.get(index);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context); 
         dialog.setTitle(item.getTitle());
         dialog.setMessage(item.getSnippet());
         dialog.show();

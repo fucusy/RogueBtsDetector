@@ -1,7 +1,11 @@
 /*
- * This service is what will be running our logic. It's a service because we want the app to
- * work at all times, and run everytime the user changes locations.
- * 
+ * This service is what will be running our logic. It's a service because we want the app
+ * to be running at all times, even when the user does not have the app explicitly open.
+ * Because it makes sense, and to save power, this service will only hook on to the "location change"
+ * event. that means it will only do work, when the user changes his/her network location.
+ * This service figures out which tower the user is connected to, and then verifies that the tower
+ * is legitimate. If the tower is not legitimate, the user is warned. This service interfaces with the
+ * app activity, so that the activity has access to the data collected/analyzed by the service.
  */
 
 package com.example.roguebtsdetector;
@@ -25,12 +29,17 @@ public class BtsVerifierService extends Service {
     private OpenBMap openBMap = new OpenBMap();
     private String mcc, mnc, lac, cellid, latitude, longitude;
 
+  
     public class BtsVerifierBinder extends Binder {
         BtsVerifierService getService() {
             return BtsVerifierService.this;
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see android.app.Service#onBind(android.content.Intent)
+     */
     @Override
     public IBinder onBind(Intent intent) {
         return btsVerifierBinder;
@@ -38,7 +47,14 @@ public class BtsVerifierService extends Service {
 
  
 
-
+    /*
+     * (non-Javadoc)
+     * @see android.app.Service#onStartCommand(android.content.Intent, int, int)
+     * 
+     * This function is called when the service is explicitly started. Here we want to initialize
+     * some long term objects. Here we also verify the tower the user is connected to is valid.
+     * 
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("BtsService", "started");
@@ -51,31 +67,26 @@ public class BtsVerifierService extends Service {
         lac = Integer.toString(gsmCellLocation.getLac());
         
         
-      
-        //createFakeProvider(locationManager);
-
-        //verifyBts(gsmLoc);
-
-        //Log.i("BtsService", "Received start id " + startId + ": " + intent);
+      /*
+        createFakeProvider(locationManager);
+        verifyBts(gsmLoc);
+        Log.i("BtsService", "Received start id " + startId + ": " + intent);
         
-        // We want this service to run indefinitely, so return sticky.
+      // We want this service to run indefinitely, so return sticky.
+      */
         return START_STICKY;
     }
 
 
+    
     @Override
     public void onDestroy() {
         // Tell the user we stopped.
     }
 
 
-  
 
-    // This is the object that receives interactions from clients.  See
-    // RemoteService for a more complete example.
-
-
-
+    
     private void verifyBts(GsmCellLocation loc)
     {
         Log.i("BtsService", "verifyBts");
@@ -91,7 +102,10 @@ public class BtsVerifierService extends Service {
     }
   
     
-    
+    /*
+     * Get the current BTS tower's location from the OpenBMap Database
+     * returns the location as a string "latitude:longitude"
+     */
     public String getOpenBMapLocation()
     {
         
@@ -108,9 +122,14 @@ public class BtsVerifierService extends Service {
         
     }
     
+    
+    
+    /*
+     * Get the current BTS tower's location from the OpenCellID Database
+     * returns the location as a string "latitude:longitude"
+     */
     public String getOpenCellIdLocation()
     {
-        
         
         openCellId.getLocation(mcc,mnc,lac,cellid);
         
@@ -125,6 +144,9 @@ public class BtsVerifierService extends Service {
     }
 
 
+    /*
+     * Get the measurements the OpenCellID Database used to calculate the current location.
+     */
     public String[] getOpenCellIdMeasurements()
     {
         
@@ -142,6 +164,10 @@ public class BtsVerifierService extends Service {
     }
 
     
+    
+    /*
+     *  Get the device's neighboring BTS stations using the OpenCellID database.
+     */
     public String[] getOpenCellIdNeighbors(int limit)
     {
         
@@ -162,35 +188,32 @@ public class BtsVerifierService extends Service {
 
     
     
-    
-
-
+    /*
+     * Decides whether the current BTS is rogue or not
+     */
     public int isRogue(GsmCellLocation loc){
- 
-        
-        if(!validId(loc.getCid()))
-            return 1;
-
-        if(!validLocation(loc.getLac()))
-            return 2;
+         
 
         return 0;
 
     }
 
-    public boolean validId(int cid){
-        return true;
-    }
-
-    public boolean validLocation(int lac){
-        return true;
-    }
-
+    
+    
+  
+    /*
+     * Alerts the user that the current BTS tower is rogue.
+     * Does so via notification? toast? ...
+     */
     public void alertUser(int status){
 
     }
 
 
+    /*
+     * Creates a fake location provider... so that we can test things.
+     * 
+     */
     public void createFakeProvider(LocationManager locman)
     {
 

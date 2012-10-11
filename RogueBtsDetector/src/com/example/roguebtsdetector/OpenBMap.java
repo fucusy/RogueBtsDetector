@@ -1,3 +1,10 @@
+/*
+ * This class provides functions that interface with the OpenBMap API.
+ * we can retrieve the current network location given the BTS identifiers.
+ * 
+ */
+
+
 package com.example.roguebtsdetector;
 
 import java.util.ArrayList;
