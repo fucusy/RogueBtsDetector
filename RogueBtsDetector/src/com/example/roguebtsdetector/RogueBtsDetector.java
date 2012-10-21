@@ -16,6 +16,8 @@ import com.google.android.maps.OverlayItem;
 import com.google.android.maps.Overlay;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.location.Location;
 import android.location.LocationProvider;
 import android.location.LocationListener;
@@ -86,10 +88,26 @@ public class RogueBtsDetector extends MapActivity implements LocationListener {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_rogue_bts_detector, menu);
+    	super.onCreateOptionsMenu(menu);
+    	MenuInflater inflater = getMenuInflater();
+//    	inflater.inflate(R.menu.activity_rogue_bts_detector, menu);
+        inflater.inflate(R.menu.menu, menu);
+
         return true;
     }
 
+    /*This method detects clicks on the menu items.
+     * */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.test_menuitem: 
+            	startActivity(new Intent(this, Test.class));
+            case R.id.settings_menuitem:
+                startActivity(new Intent(this, Preferences.class));
+        }
+        return true;
+    }
     
     
     /*

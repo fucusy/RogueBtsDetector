@@ -32,8 +32,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-         <receiver android:name="RogueBtsDetectorReceiver" >
+        <activity android:name=".Test"
+			android:label="Test"
+			android:theme="@android:style/Theme.Dialog">
+		</activity>
+        <activity android:name=".Preferences"
+			android:label="Settings ">
+		</activity>
+        <receiver android:name="RogueBtsDetectorReceiver" >
               <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

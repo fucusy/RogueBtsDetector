@@ -10,4 +10,7 @@
 	<string name="open_cell_id_url">http://www.opencellid.org/cell/</string>
 	<string name="google_location_url">http://www.google.com/glm/mmap</string>
 	<string name="open_b_map_location_url">http://www.openbmap.org/api/getGPSfromGSM.php</string>
+	<string name="test">TEST</string>
+	<string name="test1">TEST1</string>
+	<string name="test2">TEST2</string>
 </resources>
