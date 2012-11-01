@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/pref_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:text="@string/preference_label"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/choose_check_interval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/pref_label"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="57dp"
+        android:text="@string/check_interval" />
+
+    <TextView
+        android:id="@+id/toggle_detection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/choose_check_interval"
+        android:layout_below="@+id/pref_label"
+        android:layout_marginTop="17dp"
+        android:text="@string/enable_bts_detection" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/choose_check_interval"
+        android:layout_alignLeft="@+id/checkBox1"
+        android:layout_alignParentRight="true"
+        android:ems="10"
+        android:hint="@string/default_check_interval"
+        android:inputType="numberDecimal" >
+
+        <requestFocus />
+    </EditText>
+
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/toggle_detection"
+        android:layout_marginLeft="17dp"
+        android:layout_toRightOf="@+id/toggle_detection" />
+
+</RelativeLayout>

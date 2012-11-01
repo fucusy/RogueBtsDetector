@@ -69,7 +69,7 @@ public class RogueBtsDetector extends MapActivity implements LocationListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.activity_home);
 
         doBindService();
         
@@ -101,8 +101,6 @@ public class RogueBtsDetector extends MapActivity implements LocationListener {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.test_menuitem: 
-            	startActivity(new Intent(this, Test.class));
             case R.id.settings_menuitem:
                 startActivity(new Intent(this, Preferences.class));
         }
