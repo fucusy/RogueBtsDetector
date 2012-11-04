@@ -18,10 +18,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.location.Location;
 import android.location.LocationProvider;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.widget.Button;
 import android.widget.TextView;
 import com.google.android.maps.MapActivity;
 import android.content.Context;
@@ -66,12 +69,49 @@ public class RogueBtsDetector extends MapActivity implements LocationListener {
      * This is where we want to initialize variables, bind to the service, set the content view (map)
      * and other things...
      */
+    
+    Button button;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
         doBindService();
+        
+
+        button = (Button) findViewById(R.id.button1);
+        button.setOnClickListener(new OnClickListener()
+        {
+     	   @Override 
+     	   public void onClick(View v){
+     		   Intent i = new Intent(RogueBtsDetector.this, BTS_Score.class); 
+     		   startActivity(i);
+     		   }
+     	   }
+        );
+        
+        Button buttonPrefs = (Button) findViewById(R.id.button3);
+        buttonPrefs.setOnClickListener(new OnClickListener()
+        {
+     	   @Override 
+     	   public void onClick(View v){
+     		   Intent i = new Intent(RogueBtsDetector.this, Preference.class); 
+     		   startActivity(i);
+     		   }
+     	   }
+        );
+        
+        Button buttonAbout = (Button) findViewById(R.id.button2);
+        buttonAbout.setOnClickListener(new OnClickListener()
+        {
+     	   @Override 
+     	   public void onClick(View v){
+     		   Intent i = new Intent(RogueBtsDetector.this, About.class); 
+     		   startActivity(i);
+     		   }
+     	   }
+        );
         
         /*
         MapView mapView = (MapView) findViewById(R.id.mapview);

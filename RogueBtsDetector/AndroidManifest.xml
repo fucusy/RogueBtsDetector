@@ -51,34 +51,18 @@
         <activity
             android:name=".Home"
             android:label="@string/title_activity_home" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-            </intent-filter>
         </activity>
         <activity
             android:name=".Preference"
             android:label="@string/title_activity_preference" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-            </intent-filter>
         </activity>
         <activity
             android:name=".BTS_Score"
             android:label="@string/title_activity_bts__score" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-            </intent-filter>
         </activity>
         <activity
             android:name=".About"
             android:label="@string/title_activity_about" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-            </intent-filter>
         </activity>
     </application>
 

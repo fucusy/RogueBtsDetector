@@ -4,22 +4,12 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/pref_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="15dp"
-        android:text="@string/preference_label"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
         android:id="@+id/choose_check_interval"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/pref_label"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="57dp"
+        android:layout_marginTop="62dp"
         android:text="@string/check_interval" />
 
     <TextView
@@ -27,14 +17,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/choose_check_interval"
-        android:layout_below="@+id/pref_label"
-        android:layout_marginTop="17dp"
+        android:layout_below="@+id/choose_check_interval"
+        android:layout_marginTop="46dp"
         android:text="@string/enable_bts_detection" />
+
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/toggle_detection"
+        android:layout_alignBottom="@+id/toggle_detection"
+        android:layout_marginLeft="30dp"
+        android:layout_toRightOf="@+id/toggle_detection" />
 
     <EditText
         android:id="@+id/editText1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/choose_check_interval"
         android:layout_alignBottom="@+id/choose_check_interval"
         android:layout_alignLeft="@+id/checkBox1"
         android:layout_alignParentRight="true"
@@ -45,12 +45,13 @@
         <requestFocus />
     </EditText>
 
-    <CheckBox
-        android:id="@+id/checkBox1"
+    <TextView
+        android:id="@+id/pref_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/toggle_detection"
-        android:layout_marginLeft="17dp"
-        android:layout_toRightOf="@+id/toggle_detection" />
+        android:layout_above="@+id/editText1"
+        android:layout_alignLeft="@+id/choose_check_interval"
+        android:text="@string/preference_label"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
