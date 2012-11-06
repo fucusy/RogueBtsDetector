@@ -11,42 +11,67 @@
 package com.example.roguebtsdetector;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
 
+import com.example.roguebtsdetector.BtsLocationServices.ServiceToken;
+
 public class BtsVerifierService extends Service {
 
+    private BtsLocationServices btsLocationService = new BtsLocationServices();
     private GsmCellLocation gsmCellLocation;
-    private TelephonyManager telephonyManager;
-    private LocationManager locationManager;
+    private TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+    private LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
     private final IBinder btsVerifierBinder = new BtsVerifierBinder();
     private OpenCellId openCellId = new OpenCellId();
     private OpenBMap openBMap = new OpenBMap();
     private String mcc, mnc, lac, cellid, latitude, longitude;
-
-  
-    public class BtsVerifierBinder extends Binder {
-        BtsVerifierService getService() {
-            return BtsVerifierService.this;
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see android.app.Service#onBind(android.content.Intent)
-     */
-    @Override
-    public IBinder onBind(Intent intent) {
-        return btsVerifierBinder;
-    }
-
  
+ // Define a listener that responds to location updates
+    private LocationListener locationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+          // Called when a new location is found by the network location provider.
+            btsLocationService.one_time_refresh();
+            verify(btsLocationService.getToken());
+          
+        }
 
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+        public void onProviderEnabled(String provider) {}
+
+        public void onProviderDisabled(String provider) {}
+      };
+
+    
+      public class BtsVerifierBinder extends Binder {
+          BtsVerifierService getService() {
+              return BtsVerifierService.this;
+          }
+      }
+      
+      
+      /*
+       * (non-Javadoc)
+       * @see android.app.Service#onBind(android.content.Intent)
+       */
+      @Override
+      public IBinder onBind(Intent intent) {
+          return btsVerifierBinder;
+      }
+      
+      
+   
+    
     /*
      * (non-Javadoc)
      * @see android.app.Service#onStartCommand(android.content.Intent, int, int)
@@ -66,12 +91,18 @@ public class BtsVerifierService extends Service {
         cellid = Integer.toString(gsmCellLocation.getCid());
         lac = Integer.toString(gsmCellLocation.getLac());
         
+        btsLocationService.ServicesStart(60, getApplicationContext());
+        
+        // Register the listener with the Location Manager to receive location updates
+        locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        
+        
+       
         
       /*
         createFakeProvider(locationManager);
         verifyBts(gsmLoc);
         Log.i("BtsService", "Received start id " + startId + ": " + intent);
-        
       // We want this service to run indefinitely, so return sticky.
       */
         return START_STICKY;
@@ -86,6 +117,12 @@ public class BtsVerifierService extends Service {
 
 
 
+    private void verify(ServiceToken token)
+    {
+       int status = token.getStatus();
+        
+        
+    }
     
     private void verifyBts(GsmCellLocation loc)
     {
