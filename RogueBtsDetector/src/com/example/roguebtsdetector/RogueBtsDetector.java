@@ -7,13 +7,15 @@
  */
 
 package com.example.roguebtsdetector;
-import com.example.roguebtsdetector.R;
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.content.Intent;
-import android.app.Activity;
 
 public class RogueBtsDetector extends Activity {    
     
@@ -28,8 +30,14 @@ public class RogueBtsDetector extends Activity {
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        
+
+        
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.activity_home);       
+        
+ 
         
         Button buttonScore = (Button) findViewById(R.id.goScore);
         buttonScore.setOnClickListener(new OnClickListener()
@@ -59,26 +67,64 @@ public class RogueBtsDetector extends Activity {
         {
      	   @Override 
      	   public void onClick(View v){
-     		   Intent i = new Intent(RogueBtsDetector.this, About.class); 
+     	       //Intent i = new Intent(RogueBtsDetector.this, About.class); 
+
+               Intent i = new Intent(RogueBtsDetector.this, About.class); 
      		   startActivity(i);
      		   }
      	   }
         );
         
         Button buttonMap = (Button) findViewById(R.id.map);
-        buttonMap.setOnClickListener(new OnClickListener()
-        {
+        buttonMap.setOnClickListener(new OnClickListener(){
      	   @Override 
      	   public void onClick(View v){
-     		   Intent i = new Intent(RogueBtsDetector.this, BtsMap.class); 
-     		   startActivity(i);
-     		   }
+     		   //Intent i = new Intent(RogueBtsDetector.this, BtsMap.class); 
+     		  // startActivity(i);
+     		   
+     	       // Jenna !!!!!!! can you move this to its own button.
+     	       // button: "startService" in click do this..
+     	      if(!isMyServiceRunning()){
+     	         Log.i("BtsService", "starting service");
+
+     	          Intent service = new Intent(RogueBtsDetector.this, BtsVerifierService.class);
+     	          startService(service);
+     	          
+     	      }else{
+     	         Log.i("BtsService", "service already started!!!! ");
+   
+     	      }
+     	      
+     	      
      	   }
+     	}
         );
         
+        
+        /*
+        Log.i("BtsService", "app opened!!!");
 
+        
+        Context c = getApplicationContext();
+        Log.i("BtsService", c.getPackageName());
+
+        Intent service = new Intent(c, BtsVerifierService.class);
+        Log.i("BtsService", service.getPackage());
+
+        c.startService(service);
+        */
     }
 
+    
+    private boolean isMyServiceRunning() {
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if ("com.example.roguebtsdetector.btsverifierservice".equals(service.service.getClassName().toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
     
    
 

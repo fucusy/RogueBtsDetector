@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.telephony.*;
 import android.telephony.cdma.CdmaCellLocation;
+import android.util.Log;
 
 public class BtsLocationServices extends Activity {
 	
@@ -94,7 +95,7 @@ public class BtsLocationServices extends Activity {
 	}
 	
 
-	public boolean one_time_refresh (){
+	public boolean one_time_refresh(){
 		return true;
 	}
 
@@ -105,6 +106,7 @@ public class BtsLocationServices extends Activity {
 		
 		globalDelay = delay;
 		
+
 		if (runningStatus == 1)
 			return true;
 		else
@@ -147,7 +149,6 @@ public class BtsLocationServices extends Activity {
 			//as well as by this timer.
 			while(runningStatus == 1)
 			{
-				
 				//private TelephonyManager TM;
 				//TelephonyManager TM = new TelephonyManager();
 				

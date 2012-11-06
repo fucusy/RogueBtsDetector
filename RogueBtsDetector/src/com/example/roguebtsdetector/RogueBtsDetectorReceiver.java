@@ -9,12 +9,18 @@ package com.example.roguebtsdetector;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class RogueBtsDetectorReceiver extends BroadcastReceiver {
 
       @Override
       public void onReceive(Context context, Intent intent) {
-        Intent service = new Intent(context, BtsVerifierService.class);
-        context.startService(service);
+          Log.i("BtsService", "boot listener");
+          System.out.println("wtfffff");
+
+         
+         Intent service = new Intent(context, BtsVerifierService.class);
+         context.startService(service);
+      
       }
     } 

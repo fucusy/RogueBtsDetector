@@ -27,21 +27,28 @@ import com.example.roguebtsdetector.BtsLocationServices.ServiceToken;
 
 public class BtsVerifierService extends Service {
 
+    
     private BtsLocationServices btsLocationService = new BtsLocationServices();
     private GsmCellLocation gsmCellLocation;
-    private TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
-    private LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+    //private TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+    private LocationManager locationManager;
     private final IBinder btsVerifierBinder = new BtsVerifierBinder();
     private OpenCellId openCellId = new OpenCellId();
     private OpenBMap openBMap = new OpenBMap();
     private String mcc, mnc, lac, cellid, latitude, longitude;
- 
+
+    
+    
+    
  // Define a listener that responds to location updates
-    private LocationListener locationListener = new LocationListener() {
+    
+    
+    private LocationListener locationListener = new LocationListener() 
+    {
         public void onLocationChanged(Location location) {
           // Called when a new location is found by the network location provider.
             btsLocationService.one_time_refresh();
-            verify(btsLocationService.getToken());
+           // verify(btsLocationService.getToken());
           
         }
 
@@ -50,7 +57,7 @@ public class BtsVerifierService extends Service {
         public void onProviderEnabled(String provider) {}
 
         public void onProviderDisabled(String provider) {}
-      };
+    };
 
     
       public class BtsVerifierBinder extends Binder {
@@ -84,16 +91,20 @@ public class BtsVerifierService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("BtsService", "started");
         
+        
+        
         TelephonyManager telephonyManager = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
 
-        GsmCellLocation gsmCellLocation = (GsmCellLocation)telephonyManager.getCellLocation();
+        //GsmCellLocation gsmCellLocation = (GsmCellLocation)telephonyManager.getCellLocation();
         
-        cellid = Integer.toString(gsmCellLocation.getCid());
-        lac = Integer.toString(gsmCellLocation.getLac());
+        //cellid = Integer.toString(gsmCellLocation.getCid());
+        //lac = Integer.toString(gsmCellLocation.getLac());
         
-        btsLocationService.ServicesStart(6500, getApplicationContext());
+        Context cont = getApplicationContext();
+        btsLocationService.ServicesStart(6500, cont);
         
         // Register the listener with the Location Manager to receive location updates
+        locationManager = (LocationManager) cont.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         
         
@@ -116,6 +127,7 @@ public class BtsVerifierService extends Service {
     }
 
 
+    /*
 
     private void verify(ServiceToken token)
     {
@@ -128,21 +140,16 @@ public class BtsVerifierService extends Service {
     {
         Log.i("BtsService", "verifyBts");
 
-        /*
-        int status = isRogue(loc);
-
-        if(status != 0)
-        {
-            alertUser(status);
-        }	    
-         */
+    
     }
   
-    
+    */
     /*
      * Get the current BTS tower's location from the OpenBMap Database
      * returns the location as a string "latitude:longitude"
      */
+    
+    /*
     public String getOpenBMapLocation()
     {
         
@@ -158,13 +165,14 @@ public class BtsVerifierService extends Service {
         return openBMap.latitude() + ":" + openBMap.longitude();
         
     }
-    
+    */
     
     
     /*
      * Get the current BTS tower's location from the OpenCellID Database
      * returns the location as a string "latitude:longitude"
      */
+/*
     public String getOpenCellIdLocation()
     {
         
@@ -179,11 +187,13 @@ public class BtsVerifierService extends Service {
         return openCellId.latitude() + ":" + openCellId.longitude();
         
     }
-
+*/
 
     /*
      * Get the measurements the OpenCellID Database used to calculate the current location.
      */
+  
+    /*
     public String[] getOpenCellIdMeasurements()
     {
         
@@ -199,12 +209,13 @@ public class BtsVerifierService extends Service {
         return openCellId.measurements();
         
     }
-
+*/
     
     
     /*
      *  Get the device's neighboring BTS stations using the OpenCellID database.
      */
+  /*
     public String[] getOpenCellIdNeighbors(int limit)
     {
         
@@ -222,19 +233,20 @@ public class BtsVerifierService extends Service {
         return openCellId.neighbors();
         
     }
-
+*/
     
     
     /*
      * Decides whether the current BTS is rogue or not
      */
+  /*
     public int isRogue(GsmCellLocation loc){
          
 
         return 0;
 
     }
-
+*/
     
     
   
@@ -242,29 +254,11 @@ public class BtsVerifierService extends Service {
      * Alerts the user that the current BTS tower is rogue.
      * Does so via notification? toast? ...
      */
+  /*
     public void alertUser(int status){
 
     }
+*/
 
-
-    /*
-     * Creates a fake location provider... so that we can test things.
-     * 
-     */
-    public void createFakeProvider(LocationManager locman)
-    {
-
-        Log.i("BtsService", "fakeProvider");
-
-        /*
-        locman.addTestProvider(provider, false, false, true, false, false, false, false, 0, 5);
-        locman.setTestProviderLocation(provider, fakeLocation);
-        locman.setTestProviderEnabled(provider, true);
-         */
-
-
-    }
-
-
-    
 }
+    
