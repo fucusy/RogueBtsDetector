@@ -91,7 +91,7 @@ public class BtsVerifierService extends Service {
         cellid = Integer.toString(gsmCellLocation.getCid());
         lac = Integer.toString(gsmCellLocation.getLac());
         
-        btsLocationService.ServicesStart(6000, getApplicationContext());
+        btsLocationService.ServicesStart(6500, getApplicationContext());
         
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 0, 0, locationListener);
