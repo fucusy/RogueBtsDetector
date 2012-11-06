@@ -30,12 +30,16 @@
     <string name="calculate_score">Calculate Score</string>
     <string name="title_activity_about">About</string>
     <string name="enable_bts_detection">Enable Rogue BTS Detection</string>
-	<string name="check_interval">Check Interval (Seconds)</string>
-	<string name="preference_label">Preferences</string>
-	<string name="default_check_interval">60</string>
-	<string name="developed">Developers</string>
-	<string name="raul">Raul Gonzalez</string>
-	<string name="jenna">Jenna Kallaher</string>
-	<string name="bill">Bill Wysocki</string>
-	<string name="steve">Steve Morley</string>
+    <string name="check_interval">Check Interval (Seconds)</string>
+    <string name="apply">Apply</string>
+    <string name="map">Map</string>
+    <string name="preference_label">Preferences</string>
+    <string name="default_check_interval">60</string>
+    <string name="developed">Developers</string>
+    <string name="raul">Raul Gonzalez</string>
+    <string name="jenna">Jenna Kallaher</string>
+    <string name="bill">Bill Wysocki</string>
+    <string name="steve">Steve Morley</string>
+    <string name="title_activity_bts_map">BtsMap</string>
+
 </resources>

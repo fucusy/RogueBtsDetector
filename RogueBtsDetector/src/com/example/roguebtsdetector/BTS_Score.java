@@ -15,6 +15,16 @@ public class BTS_Score extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bts_score);
+        
+        Button buttonAbout = (Button) findViewById(R.id.button1);
+        buttonAbout.setOnClickListener(new OnClickListener()
+        {
+     	   @Override 
+     	   public void onClick(View v){
+     		   // TODO: force recalculate, where is analysis class?
+     	   }
+     	   }
+        );
     }
 
     @Override
