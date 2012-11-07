@@ -67,10 +67,15 @@ public class RogueBtsDetector extends Activity {
         {
      	   @Override 
      	   public void onClick(View v){
-     	       //Intent i = new Intent(RogueBtsDetector.this, About.class); 
 
-               Intent i = new Intent(RogueBtsDetector.this, About.class); 
-     		   startActivity(i);
+              // Intent i = new Intent(RogueBtsDetector.this, About.class); 
+     		  // startActivity(i);
+     	       
+     	      Log.i("BtsService", "stopping service");
+
+              Intent service = new Intent(RogueBtsDetector.this, BtsVerifierService.class);
+              stopService(service);
+     	       
      		   }
      	   }
         );
@@ -90,9 +95,6 @@ public class RogueBtsDetector extends Activity {
      	          Intent service = new Intent(RogueBtsDetector.this, BtsVerifierService.class);
      	          startService(service);
      	          
-     	      }else{
-     	         Log.i("BtsService", "service already started!!!! ");
-   
      	      }
      	      
      	      
