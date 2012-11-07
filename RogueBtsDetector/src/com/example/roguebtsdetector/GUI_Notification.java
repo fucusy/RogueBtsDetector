@@ -6,7 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-public class NotificationService {
+public class GUI_Notification {
 
 	public void notify_user(Context c, String reason)
 	{
@@ -16,7 +16,7 @@ public class NotificationService {
 			.setContentText(reason)
 			.build();
 		
-		Intent i = new Intent(c, RogueBtsDetector.class);
+		Intent i = new Intent(c, GUI_RogueBtsDetector.class);
 		
 		PendingIntent p = PendingIntent.getActivity(c, 0, i, 0);
 		
