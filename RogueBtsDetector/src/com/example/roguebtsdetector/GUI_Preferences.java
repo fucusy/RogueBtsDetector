@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-public class Preference extends Activity {
+public class GUI_Preferences extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

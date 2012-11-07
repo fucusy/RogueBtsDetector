@@ -8,9 +8,9 @@ package com.example.roguebtsdetector;
 
 
 
-public class GoogleLocation {
+public class DB_Google {
 
-    public GoogleLocation() {
+    public DB_Google() {
         // TODO Auto-generated constructor stub
     }
 

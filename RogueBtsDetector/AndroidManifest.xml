@@ -23,7 +23,7 @@
         <service android:name=".BtsVerifierService" />
 
         <activity
-            android:name=".RogueBtsDetector"
+            android:name=".GUI_RogueBtsDetector"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
@@ -42,30 +42,30 @@
             android:label="Settings " >
         </activity>
 
-        <receiver android:name="RogueBtsDetectorReceiver" >
+        <receiver android:name=".SERVICE_BootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
         <activity
-            android:name=".Home"
+            android:name=".GUI_Home"
             android:label="@string/title_activity_home" >
         </activity>
         <activity
-            android:name=".Preference"
+            android:name=".GUI_Preferences"
             android:label="@string/title_activity_preference" >
         </activity>
         <activity
-            android:name=".BTS_Score"
+            android:name=".GUI_Score"
             android:label="@string/title_activity_bts__score" >
         </activity>
         <activity
-            android:name=".About"
+            android:name=".GUI_About"
             android:label="@string/title_activity_about" >
         </activity>
         <activity
-            android:name=".BtsMap"
+            android:name=".GUI_Map"
             android:label="@string/title_activity_bts_map" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

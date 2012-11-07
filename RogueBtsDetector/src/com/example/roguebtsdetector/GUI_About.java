@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 
-public class About extends Activity {
+public class GUI_About extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

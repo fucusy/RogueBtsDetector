@@ -19,14 +19,14 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-public class OpenBMap {
+public class DB_OpenBMap {
 
     private String myLatitude, myLongitude;
     private boolean error;
     
     
     
-    public OpenBMap() {
+    public DB_OpenBMap() {
         myLatitude = "";
         myLongitude = "";
         error = false;  

@@ -11,14 +11,14 @@ import android.telephony.*;
 import android.telephony.cdma.CdmaCellLocation;
 import android.util.Log;
 
-public class BtsLocationServices extends Activity {
+public class SERVICE_Location extends Activity {
 	
 	private int runningStatus = 0;
 	private int globalDelay = 0;
 	private final ExecutorService Tpool;
 	private ServiceToken curLog = new ServiceToken();
 
-	public BtsLocationServices () {
+	public SERVICE_Location () {
 		
 		Tpool = Executors.newSingleThreadExecutor();
 	}

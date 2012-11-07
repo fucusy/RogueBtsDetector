@@ -7,7 +7,7 @@ import android.widget.Button;
 
 
 
-public class Home extends Activity 
+public class GUI_Home extends Activity 
 {
 	Button button;
    @Override

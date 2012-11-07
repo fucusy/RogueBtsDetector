@@ -23,20 +23,20 @@ import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
 
-import com.example.roguebtsdetector.BtsLocationServices.ServiceToken;
+import com.example.roguebtsdetector.SERVICE_Location.ServiceToken;
 
-public class BtsVerifierService extends Service {
+public class SERVICE_Verifier extends Service {
 
     
-    private BtsLocationServices btsLocationService = new BtsLocationServices();
+    private SERVICE_Location btsLocationService = new SERVICE_Location();
     private GsmCellLocation gsmCellLocation;
-    //private TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+    private TelephonyManager telephonyManager;
     private LocationManager locationManager;
     private final IBinder btsVerifierBinder = new BtsVerifierBinder();
-    private OpenCellId openCellId = new OpenCellId();
-    private OpenBMap openBMap = new OpenBMap();
+    private DB_OpenCellId dB_OpenCellId = new DB_OpenCellId();
+    private DB_OpenBMap dB_OpenBMap = new DB_OpenBMap();
     private String mcc, mnc, lac, cellid, latitude, longitude;
-
+    private ServiceToken serviceToken;
     
     
     
@@ -48,7 +48,8 @@ public class BtsVerifierService extends Service {
         public void onLocationChanged(Location location) {
           // Called when a new location is found by the network location provider.
             btsLocationService.one_time_refresh();
-           // verify(btsLocationService.getToken());
+            serviceToken = btsLocationService.getToken();
+           // pollDatabases(serviceToken);
           
         }
 
@@ -61,8 +62,8 @@ public class BtsVerifierService extends Service {
 
     
       public class BtsVerifierBinder extends Binder {
-          BtsVerifierService getService() {
-              return BtsVerifierService.this;
+          SERVICE_Verifier getService() {
+              return SERVICE_Verifier.this;
           }
       }
       
@@ -93,7 +94,6 @@ public class BtsVerifierService extends Service {
         
         
         
-        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
 
         //GsmCellLocation gsmCellLocation = (GsmCellLocation)telephonyManager.getCellLocation();
         
@@ -101,6 +101,8 @@ public class BtsVerifierService extends Service {
         //lac = Integer.toString(gsmCellLocation.getLac());
         
         Context cont = getApplicationContext();
+        
+        //telephonyManager = (TelephonyManager) cont.getSystemService(TELEPHONY_SERVICE);
         btsLocationService.ServicesStart(6500, cont);
         
         // Register the listener with the Location Manager to receive location updates
@@ -132,8 +134,7 @@ public class BtsVerifierService extends Service {
     private void verify(ServiceToken token)
     {
        int status = token.getStatus();
-        
-        
+                
     }
     
     private void verifyBts(GsmCellLocation loc)
@@ -153,7 +154,6 @@ public class BtsVerifierService extends Service {
     public String getOpenBMapLocation()
     {
         
-        
         openBMap.getLocation(mcc, mnc, lac, cellid);
         
         if(openBMap.err())
@@ -172,68 +172,68 @@ public class BtsVerifierService extends Service {
      * Get the current BTS tower's location from the OpenCellID Database
      * returns the location as a string "latitude:longitude"
      */
-/*
+
     public String getOpenCellIdLocation()
     {
         
-        openCellId.getLocation(mcc,mnc,lac,cellid);
+        dB_OpenCellId.getLocation(mcc,mnc,lac,cellid);
         
-        if(openCellId.err())
+        if(dB_OpenCellId.err())
             return "-1:-1";
             
         //if(res == openCellId.ERROR || res == openCellId.CONNECTION_ERR)
         //    return res;
         
-        return openCellId.latitude() + ":" + openCellId.longitude();
+        return dB_OpenCellId.latitude() + ":" + dB_OpenCellId.longitude();
         
     }
-*/
+
 
     /*
      * Get the measurements the OpenCellID Database used to calculate the current location.
      */
   
-    /*
+    
     public String[] getOpenCellIdMeasurements()
     {
         
         String[] err = {};        
-        openCellId.getMeasures(mcc, mnc, lac, cellid);
+        dB_OpenCellId.getMeasures(mcc, mnc, lac, cellid);
         
-        if(openCellId.err())
+        if(dB_OpenCellId.err())
             return err;
             
         //if(res == openCellId.ERROR || res == openCellId.CONNECTION_ERR)
         //    return res;
         
-        return openCellId.measurements();
+        return dB_OpenCellId.measurements();
         
     }
-*/
+
     
     
     /*
      *  Get the device's neighboring BTS stations using the OpenCellID database.
      */
-  /*
+  
     public String[] getOpenCellIdNeighbors(int limit)
     {
         
         String[] err = {};
         
-        openCellId.setBbox(Double.valueOf(latitude), Double.valueOf(longitude));
-        openCellId.getNeighbors(mcc, mcc, limit);
+        dB_OpenCellId.setBbox(Double.valueOf(latitude), Double.valueOf(longitude));
+        dB_OpenCellId.getNeighbors(mcc, mcc, limit);
         
-        if(openCellId.err())
+        if(dB_OpenCellId.err())
             return err;
             
         //if(res == openCellId.ERROR || res == openCellId.CONNECTION_ERR)
         //    return res;
         
-        return openCellId.neighbors();
+        return dB_OpenCellId.neighbors();
         
     }
-*/
+
     
     
     /*

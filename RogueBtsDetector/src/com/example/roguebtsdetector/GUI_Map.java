@@ -13,7 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class BtsMap extends MapActivity  {
+public class GUI_Map extends MapActivity  {
 
     private List<Overlay> mapOverlays;
     
@@ -44,7 +44,7 @@ public class BtsMap extends MapActivity  {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_menuitem:
-                startActivity(new Intent(this, Preference.class));
+                startActivity(new Intent(this, GUI_Preferences.class));
         }
         return true;
     }
@@ -57,7 +57,7 @@ public class BtsMap extends MapActivity  {
     public void showTower(int cid, int lat, int lon){
 
         Drawable drawable = this.getResources().getDrawable(R.drawable.ic_launcher);
-        BtsItemizedOverlay itemizedoverlay = new BtsItemizedOverlay(drawable, this);
+        GUI_Overlays itemizedoverlay = new GUI_Overlays(drawable, this);
         GeoPoint point = new GeoPoint(lat,lon);
         OverlayItem overlayitem = new OverlayItem(point,"Tower "+cid,"You are connected to this tower");
         itemizedoverlay.addOverlay(overlayitem);

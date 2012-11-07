@@ -16,7 +16,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-public class OpenCellId {
+public class DB_OpenCellId {
 
 
     private String openCellIdUrl, myLatitude, myLongitude, latmin, latmax, lonmin, lonmax;
@@ -26,7 +26,7 @@ public class OpenCellId {
     private static final double BBOX_LENGTH = .5;
     public static final int CONNECTION_ERR = -2 , ERROR = -1;
 
-    public OpenCellId() 
+    public DB_OpenCellId() 
     {
         myLatitude = "";
         myLongitude = "";

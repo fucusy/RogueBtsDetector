@@ -11,15 +11,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-public class RogueBtsDetectorReceiver extends BroadcastReceiver {
+public class SERVICE_BootReceiver extends BroadcastReceiver {
 
       @Override
-      public void onReceive(Context context, Intent intent) {
-          Log.i("BtsService", "boot listener");
-          System.out.println("wtfffff");
-
-         
-         Intent service = new Intent(context, BtsVerifierService.class);
+      public void onReceive(Context context, Intent intent) {    
+         Intent service = new Intent(context, SERVICE_Verifier.class);
          context.startService(service);
       
       }

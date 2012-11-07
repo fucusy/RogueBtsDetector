@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class RogueBtsDetector extends Activity {    
+public class GUI_RogueBtsDetector extends Activity {    
     
     /*
      * (non-Javadoc)
@@ -44,7 +44,7 @@ public class RogueBtsDetector extends Activity {
         {
      	   @Override 
      	   public void onClick(View v){
-     		   Intent i = new Intent(RogueBtsDetector.this, BTS_Score.class); 
+     		   Intent i = new Intent(GUI_RogueBtsDetector.this, GUI_Score.class); 
      		   startActivity(i);
      		   }
      	   }
@@ -56,7 +56,7 @@ public class RogueBtsDetector extends Activity {
         {
      	   @Override 
      	   public void onClick(View v){
-     		   Intent i = new Intent(RogueBtsDetector.this, Preference.class); 
+     		   Intent i = new Intent(GUI_RogueBtsDetector.this, GUI_Preferences.class); 
      		   startActivity(i);
      		   }
      	   }
@@ -73,7 +73,7 @@ public class RogueBtsDetector extends Activity {
      	       
      	      Log.i("BtsService", "stopping service");
 
-              Intent service = new Intent(RogueBtsDetector.this, BtsVerifierService.class);
+              Intent service = new Intent(GUI_RogueBtsDetector.this, SERVICE_Verifier.class);
               stopService(service);
      	       
      		   }
@@ -92,7 +92,7 @@ public class RogueBtsDetector extends Activity {
      	      if(!isMyServiceRunning()){
      	         Log.i("BtsService", "starting service");
 
-     	          Intent service = new Intent(RogueBtsDetector.this, BtsVerifierService.class);
+     	          Intent service = new Intent(GUI_RogueBtsDetector.this, SERVICE_Verifier.class);
      	          startService(service);
      	          
      	      }

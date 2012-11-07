@@ -6,9 +6,9 @@
 
 package com.example.roguebtsdetector;
 
-public class FireEagle {
+public class DB_FireEagle {
 
-    public FireEagle() {
+    public DB_FireEagle() {
         // TODO Auto-generated constructor stub
     }
 

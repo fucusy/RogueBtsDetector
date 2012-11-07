@@ -12,17 +12,17 @@ import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 import java.util.ArrayList;
 
-public class BtsItemizedOverlay extends ItemizedOverlay {
+public class GUI_Overlays extends ItemizedOverlay {
 
     private ArrayList<OverlayItem> overlays = new ArrayList<OverlayItem>();
     public  Context context;
 
-    public BtsItemizedOverlay(Drawable defaultMarker) {
+    public GUI_Overlays(Drawable defaultMarker) {
         super(boundCenterBottom(defaultMarker));
     }
 
 
-    public BtsItemizedOverlay(Drawable defaultMarker, Context cntxt) {
+    public GUI_Overlays(Drawable defaultMarker, Context cntxt) {
         super(boundCenterBottom(defaultMarker));
         context = cntxt;
     }
