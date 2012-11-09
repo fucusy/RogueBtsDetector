@@ -47,29 +47,13 @@ public class SERVICE_Location extends Activity {
 		}
 	}
 	
-	public class gsmObj {
-	    String cid;
-	    String lac;
-	    String mcc;
-	    String mnc;
-	    
-	    public gsmObj clone() {
-	        gsmObj gsm_copy = new gsmObj();
-	        gsm_copy.cid = this.cid;
-	        gsm_copy.lac = this.lac;
-	        gsm_copy.mcc = this.mcc;
-	        gsm_copy.mnc = this.mnc;
-	        
-	        return gsm_copy;
-	    }
-	}
+	
 	
 	
 	public class ServiceToken {
 		public int status = 0; //0 if empty, 1 if containing info
 		public int servicetype = 0;
         public cdmaObj cdma;
-        public gsmObj gsm;
 		
 		
 		
@@ -95,7 +79,6 @@ public class SERVICE_Location extends Activity {
 			copyToken.status = curLog.status;
 			copyToken.servicetype = curLog.servicetype;
 			copyToken.cdma = curLog.cdma.clone();
-            copyToken.gsm = curLog.gsm.clone();
 
 			return copyToken;
 		}
@@ -185,7 +168,6 @@ public class SERVICE_Location extends Activity {
 				//if tm is populated there must be a network type
 				
 				serviceType = tm.getNetworkType();
-                cl = tm.getCellLocation();
 				
 				
 				if (serviceType == TelephonyManager.NETWORK_TYPE_CDMA){
@@ -193,10 +175,7 @@ public class SERVICE_Location extends Activity {
 					CDMA_Listener(tm, serviceType);
 				}
 				
-				else if(cl instanceof GsmCellLocation){
-				    GSM_populate(tm, serviceType);				    
-				}
-				
+			
 				try {
 					Thread.sleep(globalDelay);
 				} catch (InterruptedException e) {
@@ -228,20 +207,7 @@ public class SERVICE_Location extends Activity {
 
 		}
 		
-		private void GSM_populate(TelephonyManager tm, int serviceType)
-		{
-		    GsmCellLocation GSMcl = (GsmCellLocation) tm.getCellLocation();
-		    
-		    synchronized(curLog){
-	            curLog.setServicetype(serviceType);
-		        curLog.gsm.cid = String.valueOf(GSMcl.getCid());
-                curLog.gsm.lac = String.valueOf(GSMcl.getLac());             
-                curLog.gsm.mcc = tm.getNetworkOperator();
-                curLog.gsm.mnc = tm.getNetworkOperator();
-                curLog.status = 1;
-		      
-		    }
-		}
+		
 	}
 }
 	

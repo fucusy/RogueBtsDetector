@@ -116,16 +116,18 @@ public class SERVICE_Verifier extends Service {
 
 
     public Map<String, double[]> pollDatabases(ServiceToken token){
+        /*
         String mcc      = token.gsm.mcc;
         String mnc      = token.gsm.mnc;
         String cellid   = token.gsm.cid;
         String lac      = token.gsm.lac;
-        
+        */
         Map <String, double[]> results = new HashMap<String, double[]>();
-        
+
+        /*
         results.put("openCellId", openCellId.getLocation(mcc, mnc, lac, cellid));
         results.put("openBMap", openBMap.getLocation(mcc, mnc, lac, cellid));
-               
+          */     
         return results;
     }
   
