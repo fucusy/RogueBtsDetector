@@ -16,10 +16,13 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import com.example.roguebtsdetector.SERVICE_Location.ServiceToken;
+
 public class DB_OpenCellId {
 
 
-    private String openCellIdUrl, myLatitude, myLongitude, latmin, latmax, lonmin, lonmax;
+    private String openCellIdUrl, latmin, latmax, lonmin, lonmax;
+    private double lat, lon;
     private boolean error;
     private String[] neighbors, measurements;
     private static final int LOCATION = 0, NEIGHS = 1, MEASURES = 2;
@@ -28,8 +31,8 @@ public class DB_OpenCellId {
 
     public DB_OpenCellId() 
     {
-        myLatitude = "";
-        myLongitude = "";
+        lat = Double.NaN;
+        lon = Double.NaN;          
         latmin = "";
         latmax = "";
         lonmin = "";
@@ -42,15 +45,15 @@ public class DB_OpenCellId {
         return error;
     }
 
-    public String latitude()
+    public double lat()
     {
-        return myLatitude;
+        return lat;
     }
     
       
-    public String longitude()
+    public double lon()
     {
-        return myLongitude;
+        return lon;
     }
 
     public String[] neighbors()
@@ -66,8 +69,10 @@ public class DB_OpenCellId {
    
 
     
-    public int getLocation(String mcc, String mnc, String lac, String cellid)
+    public double[] getLocation(String mcc, String mnc, String lac, String cellid)
     {
+        double[] pair = new double[2];
+
         openCellIdUrl = 
                 R.string.open_cell_id_url 
                 +"get?mnc=" + mnc
@@ -75,13 +80,22 @@ public class DB_OpenCellId {
                 +"&lac=" + lac
                 +"&cellid=" + cellid
                 +"&fmt=txt";
+        
 
-        return openCellIdRequest(LOCATION);
+        openCellIdRequest(LOCATION);
+        
+        if(error)
+            return null;
+        
+        pair[0] = lat;
+        pair[1] = lon;
+                
+        return pair;
 
     }
 
 
-    public int getMeasures(String mcc, String mnc, String lac, String cellid)
+    public String[] getMeasures(String mcc, String mnc, String lac, String cellid)
     {
         openCellIdUrl  = 
                 R.string.open_cell_id_url 
@@ -91,27 +105,38 @@ public class DB_OpenCellId {
                 +"&cellid=" + cellid
                 +"&fmt=txt";
 
-        return openCellIdRequest(MEASURES);
-
-
+        openCellIdRequest(MEASURES);
+       
+        if(error){
+            return null;
+        }
+        else{
+            return measurements;
+        }
+                         
     }
 
+
+ 
     
-    public void setBbox(double lat, double lon)
+    
+    public void setBbox(double latitude, double longitude)
     {
-            latmin = Double.toString(lat - BBOX_LENGTH);
-            latmax = Double.toString(lat + BBOX_LENGTH);
-            lonmin = Double.toString(lon - BBOX_LENGTH);
-            lonmax = Double.toString(lon + BBOX_LENGTH);
+            latmin = Double.toString(latitude - BBOX_LENGTH);
+            latmax = Double.toString(latitude + BBOX_LENGTH);
+            lonmin = Double.toString(longitude - BBOX_LENGTH);
+            lonmax = Double.toString(longitude + BBOX_LENGTH);
        
     }
 
-    public int getNeighbors(String mcc, String mnc, int limit)
+    public String[] getNeighbors(String mcc, String mnc, int limit)
     {
 
         if(limit > 200)
             limit = 200;      
 
+        setBbox(lat, lon);
+        
         openCellIdUrl  = 
                 R.string.open_cell_id_url 
                 +"getInArea/?BBOX=" + latmin
@@ -126,11 +151,22 @@ public class DB_OpenCellId {
         if(mnc != "")
             openCellIdUrl = openCellIdUrl + "&mnc=" + mnc;
 
-        return openCellIdRequest(NEIGHS);
-
+        openCellIdRequest(NEIGHS);
+        
+        if(error){
+            return null;
+        }
+        else{
+            return neighbors;
+        }
+        
     }
 
+    
 
+
+    
+    
 
     private int openCellIdRequest(int type)
     {
@@ -163,8 +199,8 @@ public class DB_OpenCellId {
             {
                 case LOCATION:
                     tmp = res.split(",");
-                    myLatitude = tmp[0];
-                    myLongitude = tmp[1];
+                    lat = Double.parseDouble(tmp[0]);
+                    lon = Double.parseDouble(tmp[1]);
                     break;
                 case NEIGHS:
                     neighbors = res.split("\n\r");

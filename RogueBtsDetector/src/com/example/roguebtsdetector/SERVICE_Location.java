@@ -1,15 +1,14 @@
 package com.example.roguebtsdetector;
 
-import java.io.IOException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import android.app.Activity;
 import android.content.Context;
-import android.telephony.*;
+import android.telephony.CellLocation;
+import android.telephony.TelephonyManager;
 import android.telephony.cdma.CdmaCellLocation;
-import android.util.Log;
+import android.telephony.gsm.GsmCellLocation;
 
 public class SERVICE_Location extends Activity {
 	
@@ -42,16 +41,35 @@ public class SERVICE_Location extends Activity {
 			cdma_copy.net_id = this.net_id;
 			cdma_copy.sys_id = this.sys_id;
 			cdma_copy.dbm = this.dbm;
-			cdma_copy.ecio = this.ecio;
+            cdma_copy.ecio = this.ecio;
 			
 			return cdma_copy;
 		}
 	}
 	
+	public class gsmObj {
+	    String cid;
+	    String lac;
+	    String mcc;
+	    String mnc;
+	    
+	    public gsmObj clone() {
+	        gsmObj gsm_copy = new gsmObj();
+	        gsm_copy.cid = this.cid;
+	        gsm_copy.lac = this.lac;
+	        gsm_copy.mcc = this.mcc;
+	        gsm_copy.mnc = this.mnc;
+	        
+	        return gsm_copy;
+	    }
+	}
+	
+	
 	public class ServiceToken {
-		private int status = 0; //0 if empty, 1 if containing info
-		private int servicetype = 0;
-        private cdmaObj cdma;
+		public int status = 0; //0 if empty, 1 if containing info
+		public int servicetype = 0;
+        public cdmaObj cdma;
+        public gsmObj gsm;
 		
 		
 		
@@ -77,6 +95,8 @@ public class SERVICE_Location extends Activity {
 			copyToken.status = curLog.status;
 			copyToken.servicetype = curLog.servicetype;
 			copyToken.cdma = curLog.cdma.clone();
+            copyToken.gsm = curLog.gsm.clone();
+
 			return copyToken;
 		}
 	}
@@ -135,6 +155,7 @@ public class SERVICE_Location extends Activity {
 	private class LoggingRunnable implements Runnable {
 	
 		private Context myContext;
+		private TelephonyManager tm;
 		
 		LoggingRunnable(Context mContext){
 			this.myContext = mContext;
@@ -145,15 +166,13 @@ public class SERVICE_Location extends Activity {
 			int type;
 			int state;
 			int serviceType;
+            TelephonyManager tm;
+			CellLocation cl;
 			//Everything inside running status is a function so it can be called by events
 			//as well as by this timer.
 			while(runningStatus == 1)
 			{
-				//private TelephonyManager TM;
-				//TelephonyManager TM = new TelephonyManager();
-				
-				TelephonyManager tm;
-				
+								
 				try{
 					tm = (TelephonyManager) this.myContext.getSystemService(Context.TELEPHONY_SERVICE);	
 				}
@@ -164,15 +183,20 @@ public class SERVICE_Location extends Activity {
 	
 				
 				//if tm is populated there must be a network type
-				serviceType = tm.getNetworkType();
 				
-				if (serviceType == TelephonyManager.NETWORK_TYPE_CDMA)
-				{
+				serviceType = tm.getNetworkType();
+                cl = tm.getCellLocation();
+				
+				
+				if (serviceType == TelephonyManager.NETWORK_TYPE_CDMA){
 					CDMA_populate(tm, serviceType);
 					CDMA_Listener(tm, serviceType);
 				}
-	
-	
+				
+				else if(cl instanceof GsmCellLocation){
+				    GSM_populate(tm, serviceType);				    
+				}
+				
 				try {
 					Thread.sleep(globalDelay);
 				} catch (InterruptedException e) {
@@ -181,6 +205,8 @@ public class SERVICE_Location extends Activity {
 				}
 			}
 		}
+		
+		
 			
 		private void CDMA_populate(TelephonyManager tm, int serviceType){
 			CdmaCellLocation CDMAcl;
@@ -197,8 +223,24 @@ public class SERVICE_Location extends Activity {
 	    		curLog.status = 1;
 			}
 		}
+		
 		private void CDMA_Listener(TelephonyManager tm, int serviceType){
 
+		}
+		
+		private void GSM_populate(TelephonyManager tm, int serviceType)
+		{
+		    GsmCellLocation GSMcl = (GsmCellLocation) tm.getCellLocation();
+		    
+		    synchronized(curLog){
+	            curLog.setServicetype(serviceType);
+		        curLog.gsm.cid = String.valueOf(GSMcl.getCid());
+                curLog.gsm.lac = String.valueOf(GSMcl.getLac());             
+                curLog.gsm.mcc = tm.getNetworkOperator();
+                curLog.gsm.mnc = tm.getNetworkOperator();
+                curLog.status = 1;
+		      
+		    }
 		}
 	}
 }

@@ -21,16 +21,16 @@ import org.apache.http.util.EntityUtils;
 
 public class DB_OpenBMap {
 
-    private String myLatitude, myLongitude;
+    private double lat, lon;
     private boolean error;
     
     
     
     public DB_OpenBMap() {
-        myLatitude = "";
-        myLongitude = "";
+        lat = Double.NaN;
+        lon = Double.NaN;
         error = false;  
-       }
+    }
 
     
     public boolean err()
@@ -38,20 +38,21 @@ public class DB_OpenBMap {
         return error;
     }
 
-    public String latitude()
+    public double lat()
     {
-        return myLatitude;
+        return lat;
     }
     
    
-    public String longitude()
+    public double lon()
     {
-        return myLongitude;
+        return lon;
     }
    
 
-    public int getLocation(String mcc, String mnc, String lac, String cellid)
+    public double[] getLocation(String mcc, String mnc, String lac, String cellid)
     {
+        double[] pair = new double[2];
         String res;
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost request = new HttpPost(R.string.open_b_map_location_url + "");
@@ -74,13 +75,22 @@ public class DB_OpenBMap {
         catch(Exception e)
         {
             error = true;
-            return -1;
+            return null;
+
         }
         
         extractLocation(res);
         
-        return 1;
+        if(error) 
+            return null;
+        
+        pair[0] = lat;
+        pair[1] = lon; 
+        return pair;
+               
     }
+    
+    
     
     private void extractLocation(String response)
     {
@@ -95,11 +105,11 @@ public class DB_OpenBMap {
     
         latIndex =  response.indexOf("lat=");
         response = response.substring(latIndex+5);
-        myLatitude = response.substring(0, response.indexOf('\"'));
+        lat = Double.parseDouble(response.substring(0, response.indexOf('\"')));
         
         lonIndex = response.indexOf("lng=");
         response = response.substring(lonIndex);
-        myLongitude = response.substring(0, response.indexOf('\"'));
+        lon = Double.parseDouble(response.substring(0, response.indexOf('\"')));
         
         
     }

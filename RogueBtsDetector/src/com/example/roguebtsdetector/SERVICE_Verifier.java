@@ -10,6 +10,9 @@
 
 package com.example.roguebtsdetector;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -29,12 +32,12 @@ public class SERVICE_Verifier extends Service {
 
     
     private SERVICE_Location btsLocation = new SERVICE_Location();
-    //private GsmCellLocation gsmCellLocation;
     private TelephonyManager telephonyManager;
     private LocationManager locationManager;
     private final IBinder btsServiceBinder = new BtsServiceBinder();
     private ServiceToken serviceToken;
-    
+    private DB_OpenCellId openCellId = new DB_OpenCellId();
+    private DB_OpenBMap openBMap = new DB_OpenBMap();
     
     
  // Define a listener that responds to location updates
@@ -46,7 +49,7 @@ public class SERVICE_Verifier extends Service {
           // Called when a new location is found by the network location provider.
             btsLocation.one_time_refresh();
             serviceToken = btsLocation.getToken();
-           // pollDatabases(serviceToken);
+            verify(serviceToken, pollDatabases(serviceToken));
           
         }
 
@@ -88,15 +91,8 @@ public class SERVICE_Verifier extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("BtsService", "started");
-        
-        
-        
-
-        //GsmCellLocation gsmCellLocation = (GsmCellLocation)telephonyManager.getCellLocation();
-        
-        //cellid = Integer.toString(gsmCellLocation.getCid());
-        //lac = Integer.toString(gsmCellLocation.getLac());
-        
+         
+          
         Context cont = getApplicationContext();
         
         //telephonyManager = (TelephonyManager) cont.getSystemService(TELEPHONY_SERVICE);
@@ -107,14 +103,7 @@ public class SERVICE_Verifier extends Service {
         locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         
         
-       
-        
-      /*
-        createFakeProvider(locationManager);
-        verifyBts(gsmLoc);
-        Log.i("BtsService", "Received start id " + startId + ": " + intent);
-      // We want this service to run indefinitely, so return sticky.
-      */
+
         return START_STICKY;
     }
 
@@ -126,48 +115,37 @@ public class SERVICE_Verifier extends Service {
     }
 
 
-    /*
-
-    private void verify(ServiceToken token)
-    {
-       int status = token.getStatus();
-                
-    }
-    
-    private void verifyBts(GsmCellLocation loc)
-    {
-        Log.i("BtsService", "verifyBts");
-
-    
+    public Map<String, double[]> pollDatabases(ServiceToken token){
+        String mcc      = token.gsm.mcc;
+        String mnc      = token.gsm.mnc;
+        String cellid   = token.gsm.cid;
+        String lac      = token.gsm.lac;
+        
+        Map <String, double[]> results = new HashMap<String, double[]>();
+        
+        results.put("openCellId", openCellId.getLocation(mcc, mnc, lac, cellid));
+        results.put("openBMap", openBMap.getLocation(mcc, mnc, lac, cellid));
+               
+        return results;
     }
   
-    */
-    
    
-    
-    /*
-     * Decides whether the current BTS is rogue or not
-     */
-  /*
-    public int isRogue(GsmCellLocation loc){
-         
-
-        return 0;
-
+    public void verify(ServiceToken token, Map<String, double[]> location)
+    {
+        
+        
     }
-*/
-    
     
   
     /*
      * Alerts the user that the current BTS tower is rogue.
      * Does so via notification? toast? ...
      */
-  /*
+  
     public void alertUser(int status){
 
     }
-*/
+
 
 }
     
